@@ -3,7 +3,7 @@
 namespace MyProject\MyNamespace;
 
 /*
- * Ta klasa ma wg. terści zadania:
+ * Ta klasa ma wg. treści zadania:
  * - pobierać aktualną pogodę (temperatura w stopniach Celsjusza i ciśnienie (jak jest dostępne) dla Poland Warsaw
  * - Klasa powinna wew. pobrać informacje z 3+ różnych API (zakladam ze to osobne klasy)
  * - Uśrednić wynik
@@ -27,7 +27,20 @@ class Weather
 {
     function __construct()
     {
-        $answer = new Data\SourceOne("http://data.twojapogoda.pl/forecasts/city/default/2333");
+
+        $array = [];
+
+        $answer = new Data\SourceOne();
+        $result = get_object_vars($answer);
+
+
+
+        array_push($array, $result["array"]);
+        echo "<pre>";
+        print_r($array[0]);
+
+        $answer2 = new Data\SourceTwo();
+
     }
 
     // https://stackoverflow.com/questions/599670/how-to-include-all-php-files-from-a-directory

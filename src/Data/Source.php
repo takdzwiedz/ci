@@ -13,8 +13,6 @@ abstract class Source
 
     private $url;
 
-    abstract function getData();
-
     /**
      * @return mixed
      */
