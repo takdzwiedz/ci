@@ -19,15 +19,27 @@ class SourceTwo extends Source
 
         $string = 'weather-currently-temp-strict">';
 
-        if (strpos($result,strpos($result,$string)))
+        if (strpos($result,$string))
         {
             $length = strlen($string);
             $start = strpos($result,$string) + $length;
             $this->setTemperature(substr($result, $start, 2));
         }
 
-        echo $this->getTemperature();
-        die("You are the best around!");
+        // trzeba przeszukać pod kątem przeszukani pierwszych 4 znaków (ćiśnienie) nasepujące po pierwszym wystąpieniu znaku zamknięcia tagu ">" po weather-currently-details-value z uwagi na to, że czasem jest rising, czasem steady w zalżeności od zmiany ciśnienia.
+        $string = 'weather-currently-details-value rising">';
+        if (strpos($result,$string))
+        {
+            $length = strlen($string);
+            $start2 = strpos($result,$string) + $length;
+            $this->setPressure(substr($result, $start2, 4));
+        }
+//
+//        echo $this->getTemperature();
+//        echo "<br>";
+//        echo $this->getPressure();
+//        echo "<br>";
+//        die("You are the best around!");
 
         $this->setArray(array(
             $url => array(

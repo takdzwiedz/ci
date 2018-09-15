@@ -33,14 +33,20 @@ class Weather
         $answer = new Data\SourceOne();
         $result = get_object_vars($answer);
 
-
-
         array_push($array, $result["array"]);
-        echo "<pre>";
-        print_r($array[0]);
 
         $answer2 = new Data\SourceTwo();
+        $result2 = get_object_vars($answer2);
 
+        array_push($array, $result2["array"]);
+
+        echo "<pre>";
+//        echo "Źródło 1";
+//        print_r($answer);
+//        echo "Źródło 2";
+//        print_r($answer2);
+//        echo "Zbiorcza";
+        print_r($array);
     }
 
     // https://stackoverflow.com/questions/599670/how-to-include-all-php-files-from-a-directory
