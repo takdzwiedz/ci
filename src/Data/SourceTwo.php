@@ -27,19 +27,31 @@ class SourceTwo extends Source
         }
 
         // trzeba przeszukać pod kątem przeszukani pierwszych 4 znaków (ćiśnienie) nasepujące po pierwszym wystąpieniu znaku zamknięcia tagu ">" po weather-currently-details-value z uwagi na to, że czasem jest rising, czasem steady w zalżeności od zmiany ciśnienia.
-        $string = 'weather-currently-details-value rising">';
-        if (strpos($result,$string))
+
+        // szukam miejsca od którego należy rozpocząć przeszukiwanie.
+        $stringPressure = 'Ciśnienie';
+        $stringPressureLength = strlen($string);
+        //Znajdż położenie słowa Ciśnienie w kodzie;
+        $stringPressurePosition = strpos($result,$stringPressure);
+//        echo $stringPressurePosition;
+        // Ogranicz string do wycinka $stringPressurePosition +1000 znaków;
+        $stringWithPressureValue = substr($result, $stringPressurePosition + $stringPressureLength, 1000);
+//        echo $stringWithPressureValue;
+        //Znajdź pierwsze wystąpienie ">". Po nim jest wartość ciśnienia.
+        $stringMark = ">";
+        $stringMarkLength = 1;
+        //Znajdź położenie znacznika">" w wycinku stringa z kodem;
+        $strigMarkPosition = strpos($stringWithPressureValue, $stringMark);
+//        echo $strigMarkPosition;
+        $pressure = substr($stringWithPressureValue, 105,4);
+//        echo $pressure;
+//        echo "<br>";
+
+//        die("OK");
+        if (strpos($result,$stringPressure))
         {
-            $length = strlen($string);
-            $start2 = strpos($result,$string) + $length;
-            $this->setPressure(substr($result, $start2, 4));
+            $this->setPressure($pressure);
         }
-//
-//        echo $this->getTemperature();
-//        echo "<br>";
-//        echo $this->getPressure();
-//        echo "<br>";
-//        die("You are the best around!");
 
         $this->setArray(array(
             $url => array(

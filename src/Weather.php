@@ -40,11 +40,17 @@ class Weather
 
         array_push($array, $result2["array"]);
 
+        $answer3 = new Data\SourceThree();
+        $result3 = get_object_vars($answer3);
+
+        array_push($array, $result3["array"]);
+
         echo "<pre>";
 //        echo "Źródło 1";
 //        print_r($answer);
 //        echo "Źródło 2";
 //        print_r($answer2);
+//        print_r($answer3);
 //        echo "Zbiorcza";
         print_r($array);
     }
