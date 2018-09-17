@@ -27,6 +27,10 @@ namespace MyProject\MyNamespace;
 class Weather
 {
     private $data;
+
+    private $averageTemperature;
+
+    private $averagePressure;
     
     function __construct()
     {
@@ -47,12 +51,71 @@ class Weather
 
             array_push($data, $result["array"]);
 
-
-
         }
         $this->setData($data);
-//        echo "<pre>";
-//        print_r($data);
+        $this->averagePressure();
+        $this->averageTemperature();
+        $this->showAverageData();
+    }
+
+    public function showData()
+    {
+        echo "<pre>";
+        print_r($this->getData());
+    }
+
+    public function averageTemperature()
+    {
+        $data = $this->getData();
+
+        $i = 0;
+        $summaryTemperature = 0;
+
+        foreach ($data as $key => $value)
+        {
+            foreach ($value as $key2=>$value2)
+            {
+                $temperature = $value2[0];
+
+                if($temperature)
+                {
+                    $summaryTemperature += $temperature;
+                    $i++;
+                }
+            }
+        }
+        $this->setAverageTemperature(round($summaryTemperature/$i, 2));
+    }
+
+    public function averagePressure()
+    {
+        $data = $this->getData();
+
+        $i = 0;
+        $summaryPressure = 0;
+
+        foreach ($data as $key => $value)
+        {
+            foreach ($value as $key2=>$value2)
+            {
+                $pressure = $value2[1];
+
+                if($pressure)
+                {
+                    $summaryPressure += $pressure;
+                    $i++;
+                }
+            }
+        }
+        $this->setAveragePressure(round($summaryPressure/$i, 2));
+    }
+
+    public function showAverageData()
+    {
+        echo "Temperature in Warsaw: " . $this->getAverageTemperature();
+        echo "<br>";
+        echo "Pressure in Warsaw: " . $this->getAveragePressure();
+        echo "<br>";
     }
 
     /**
@@ -71,16 +134,38 @@ class Weather
         $this->data = $data;
     }
 
-    public function showData()
+    /**
+     * @return mixed
+     */
+    public function getAverageTemperature()
     {
-        echo "<pre>";
-        print_r($this->getData());
-
+        return $this->averageTemperature;
     }
 
-    public function averageTemperature()
+    /**
+     * @param mixed $averageTemperature
+     */
+    public function setAverageTemperature($averageTemperature)
     {
-        
+        $this->averageTemperature = $averageTemperature;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getAveragePressure()
+    {
+        return $this->averagePressure;
+    }
+
+    /**
+     * @param mixed $averagePressure
+     */
+    public function setAveragePressure($averagePressure)
+    {
+        $this->averagePressure = $averagePressure;
+    }
+
+
 
 }

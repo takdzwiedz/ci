@@ -6,6 +6,7 @@ namespace MyProject\MyNamespace\Data\Sources;
 use MyProject\MyNamespace\Data\Source;
 use MyProject\MyNamespace\Helper\Curl;
 
+
 class SourceThree extends Source
 {
 
@@ -19,31 +20,42 @@ class SourceThree extends Source
 
         $result = $data->result;
 
-        $string = '°C';
+        try
+        {
+            if($result)
+            {
 
-        $temperature = substr($result, strpos($result, $string)-2,2 );
+                $string = '°C';
 
-        $temperature = preg_replace("/[^0-9]/", '', $temperature);
+                $temperature = substr($result, strpos($result, $string)-2,2 );
 
-        $this->setTemperature($temperature);
+                $temperature = preg_replace("/[^0-9]/", '', $temperature);
 
-        $string = " hPa";
+                $this->setTemperature($temperature);
 
-        $pressure = substr($result, strpos($result, $string)-4,4);
+                $string = " hPa";
 
-        $pressure = preg_replace("/[^0-9]/", '', $pressure);
+                $pressure = substr($result, strpos($result, $string)-4,4);
 
-        $this->setPressure($pressure);
+                $pressure = preg_replace("/[^0-9]/", '', $pressure);
 
-        $this->setArray(array(
+                $this->setPressure($pressure);
 
-            $url => array(
+                $this->setArray(array(
 
-                $this->getTemperature(),
-                $this->getPressure()
+                    $url => array(
 
-            )
-        ));
+                        $this->getTemperature(),
+                        $this->getPressure()
+                    )
+                ));
+
+            } else {
+                throw new \Exception('No data from ' . $url);
+            }
+        } catch (\Exception $ex){
+            echo 'Error: ' . $ex->getMessage();
+        }
     }
 
     public function getArray()

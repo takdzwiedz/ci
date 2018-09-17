@@ -23,20 +23,34 @@ class SourceOne extends Source
         $url = "http://data.twojapogoda.pl/forecasts/city/default/2333";
         $data = new Curl($url);
         $result = $data->result;
-        $result = json_decode($result, true);
-        $temperature = $result["forecasts"]["default"][0]["temp"];
-        $temperature = preg_replace("/[^0-9]/", '', $temperature);
-        $this->setTemperature($temperature);
-        $pressure = $result["forecasts"]["default"][0]["pressmsl"];
-        $pressure = preg_replace("/[^0-9]/", '', $pressure);
-        $this->setPressure($pressure);
 
-        $this->setArray(array(
-            $url => array(
-                $this->getTemperature(),
-                $this->getPressure()
-            )
-        ));
+        try {
+            if ($result) {
+                $result = json_decode($result, true);
+
+                $temperature = $result["forecasts"]["default"][0]["temp"];
+                $temperature = preg_replace("/[^0-9]/", '', $temperature);
+
+                $this->setTemperature($temperature);
+
+                $pressure = $result["forecasts"]["default"][0]["pressmsl"];
+                $pressure = preg_replace("/[^0-9]/", '', $pressure);
+
+                $this->setPressure($pressure);
+
+                $this->setArray(array(
+                    $url => array(
+                        $this->getTemperature(),
+                        $this->getPressure()
+                    )
+                ));
+
+            } else {
+                throw new \Exception('No data from ' . $url);
+            }
+        } catch (\Exception $ex) {
+            echo 'Error: ' . $ex->getMessage();
+        }
     }
 
     public function getArray()
