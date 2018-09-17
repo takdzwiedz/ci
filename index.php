@@ -2,4 +2,5 @@
 
 include 'Psr4Autoloader.php';
 
-new \MyProject\MyNamespace\Weather();
+$obj = new \MyProject\MyNamespace\Weather();
+$obj->showData();

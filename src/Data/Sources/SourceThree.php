@@ -1,8 +1,9 @@
 <?php
 
 
-namespace MyProject\MyNamespace\Data;
+namespace MyProject\MyNamespace\Data\Sources;
 
+use MyProject\MyNamespace\Data\Source;
 use MyProject\MyNamespace\Helper\Curl;
 
 class SourceThree extends Source
@@ -21,23 +22,26 @@ class SourceThree extends Source
         $string = '°C';
 
         $temperature = substr($result, strpos($result, $string)-2,2 );
+
+        $temperature = preg_replace("/[^0-9]/", '', $temperature);
+
         $this->setTemperature($temperature);
 
-//        echo $temperature;
-
         $string = " hPa";
+
         $pressure = substr($result, strpos($result, $string)-4,4);
+
+        $pressure = preg_replace("/[^0-9]/", '', $pressure);
+
         $this->setPressure($pressure);
-//        echo $pressure;
-//        echo "<br>";
-//        die("OK");
-
-
 
         $this->setArray(array(
+
             $url => array(
+
                 $this->getTemperature(),
                 $this->getPressure()
+
             )
         ));
     }

@@ -12,8 +12,6 @@ class Curl
 
     function __construct($url)
     {
-
-//        echo $url;die();
         $this->url = $url;
         //  Initiate curl
         $ch = curl_init();
@@ -27,8 +25,6 @@ class Curl
         $result=curl_exec($ch);
         // Closing
         curl_close($ch);
-
-        //https://stackoverflow.com/questions/6041741/fastest-way-to-check-if-a-string-is-json-in-php
 
         if($result)
         {

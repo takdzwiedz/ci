@@ -1,15 +1,16 @@
 <?php
 
-namespace MyProject\MyNamespace\Data;
+namespace MyProject\MyNamespace\Data\Sources;
 
 /*
  * Ta klasa jest przykładową klasą poboru danych z serwisu (API)
  * Ta klasa ma zwracać tablicę z array ( nazwa serwisu = > arrray ( teperatura, ciśnienie))
  * Ta klasa powinna mieć wyniesiony mecchanizm curla na zwenatrz i tylko obrabiać dane włąściwe dla danego serwisu.
  * Ta klasa może rozszerzać klasę abstrakcyjną Source.php
- *
+ * Ta klasa musi mieć zabezpieczenie na same liczby
  */
 
+use MyProject\MyNamespace\Data\Source;
 use MyProject\MyNamespace\Helper\Curl;
 
 class SourceOne extends Source
@@ -23,8 +24,12 @@ class SourceOne extends Source
         $data = new Curl($url);
         $result = $data->result;
         $result = json_decode($result, true);
-        $this->setTemperature($result["forecasts"]["default"][0]["temp"]);
-        $this->setPressure($result["forecasts"]["default"][0]["pressmsl"]);
+        $temperature = $result["forecasts"]["default"][0]["temp"];
+        $temperature = preg_replace("/[^0-9]/", '', $temperature);
+        $this->setTemperature($temperature);
+        $pressure = $result["forecasts"]["default"][0]["pressmsl"];
+        $pressure = preg_replace("/[^0-9]/", '', $pressure);
+        $this->setPressure($pressure);
 
         $this->setArray(array(
             $url => array(

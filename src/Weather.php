@@ -23,39 +23,64 @@ namespace MyProject\MyNamespace;
  */
 
 
+
 class Weather
 {
+    private $data;
+    
     function __construct()
     {
 
-        $array = [];
+        $data = [];
 
-        $answer = new Data\SourceOne();
-        $result = get_object_vars($answer);
+        foreach (new \DirectoryIterator('src/Data/Sources') as $class)
+        {
+            if($class->isDot()) continue;
 
-        array_push($array, $result["array"]);
+            $class = basename($class, '.php');
 
-        $answer2 = new Data\SourceTwo();
-        $result2 = get_object_vars($answer2);
+            $className = "MyProject\MyNamespace\Data\Sources\\$class";
 
-        array_push($array, $result2["array"]);
+            $obj = new $className;
 
-        $answer3 = new Data\SourceThree();
-        $result3 = get_object_vars($answer3);
+            $result = get_object_vars($obj);
 
-        array_push($array, $result3["array"]);
+            array_push($data, $result["array"]);
 
-        echo "<pre>";
-//        echo "Źródło 1";
-//        print_r($answer);
-//        echo "Źródło 2";
-//        print_r($answer2);
-//        print_r($answer3);
-//        echo "Zbiorcza";
-        print_r($array);
+
+
+        }
+        $this->setData($data);
+//        echo "<pre>";
+//        print_r($data);
     }
 
-    // https://stackoverflow.com/questions/599670/how-to-include-all-php-files-from-a-directory
-    // https://stackoverflow.com/questions/21559957/create-instances-of-all-classes-in-a-directory-with-php
+    /**
+     * @return mixed
+     */
+    public function getData()
+    {
+        return $this->data;
+    }
+
+    /**
+     * @param mixed $data
+     */
+    public function setData(array $data)
+    {
+        $this->data = $data;
+    }
+
+    public function showData()
+    {
+        echo "<pre>";
+        print_r($this->getData());
+
+    }
+
+    public function averageTemperature()
+    {
+        
+    }
 
 }
