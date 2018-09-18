@@ -6,14 +6,17 @@ namespace MyProject\MyNamespace\Data;
 
 abstract class Source
 {
-
     private $temperature;
 
     private $pressure;
 
     private $url;
 
+    private $data;
+
     public $array;
+
+    abstract function retrieveData();
 
     /**
      * @return mixed
@@ -79,4 +82,19 @@ abstract class Source
         $this->array = $array;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getData()
+    {
+        return $this->data;
+    }
+
+    /**
+     * @param mixed $data
+     */
+    public function setData($data)
+    {
+        $this->data = $data;
+    }
 }

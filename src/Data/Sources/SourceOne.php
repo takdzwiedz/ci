@@ -11,44 +11,34 @@ namespace MyProject\MyNamespace\Data\Sources;
  */
 
 use MyProject\MyNamespace\Data\Source;
-use MyProject\MyNamespace\Helper\Curl;
+use MyProject\MyNamespace\Weather\Loader;
 
 class SourceOne extends Source
 {
 
-    public function __construct()
+    private $url = "http://data.twojapogoda.pl/forecasts/city/default/2333";
+
+    use Loader;
+
+    public function retrieveData()
     {
-        $url = "http://data.twojapogoda.pl/forecasts/city/default/2333";
-        $data = new Curl($url);
-        $result = $data->result;
+        $result = $this->getData();
+        $result = json_decode(strip_tags($result), true);
 
-        try {
-            if ($result) {
-                $result = json_decode($result, true);
+        $temperature = $result["forecasts"]["default"][0]["temp"];
+        $temperature = preg_replace("/[^0-9]/", '', $temperature);
+        $this->setTemperature($temperature);
 
-                $temperature = $result["forecasts"]["default"][0]["temp"];
-                $temperature = preg_replace("/[^0-9]/", '', $temperature);
+        $pressure = $result["forecasts"]["default"][0]["pressmsl"];
+        $pressure = preg_replace("/[^0-9]/", '', $pressure);
+        $this->setPressure($pressure);
 
-                $this->setTemperature($temperature);
-
-                $pressure = $result["forecasts"]["default"][0]["pressmsl"];
-                $pressure = preg_replace("/[^0-9]/", '', $pressure);
-
-                $this->setPressure($pressure);
-
-                $this->setArray(array(
-                    $url => array(
-                        $this->getTemperature(),
-                        $this->getPressure()
-                    )
-                ));
-
-            } else {
-                throw new \Exception('No data from ' . $url);
-            }
-        } catch (\Exception $ex) {
-            echo 'Error: ' . $ex->getMessage();
-        }
+        $this->setArray(array(
+            $this->getUrl() => array(
+                $this->getTemperature(),
+                $this->getPressure()
+            )
+        ));
     }
 
 }

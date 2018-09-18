@@ -1,6 +1,6 @@
 <?php
 
-namespace MyProject\MyNamespace;
+namespace MyProject\MyNamespace\Weather;
 
 /*
  * Ta klasa ma wg. treści zadania:
@@ -22,34 +22,19 @@ namespace MyProject\MyNamespace;
 
 
 
-class Weather
+class WarsawWeather extends Weather
 {
-    private $data;
-
-    private $averageTemperature;
-
-    private $averagePressure;
-    
     function __construct()
     {
-
         $data = [];
 
         foreach (new \DirectoryIterator('src/Data/Sources') as $class)
         {
             if($class->isDot()) continue;
-
             $class = basename($class, '.php');
-
             $className = "MyProject\MyNamespace\Data\Sources\\$class";
-
             $obj = new $className;
-
             $result = get_object_vars($obj);
-
-            echo "<pre>";
-            print_r($result);
-
             array_push($data, $result["array"]);
 
         }
@@ -59,16 +44,9 @@ class Weather
         $this->showAverageData();
     }
 
-    public function showData()
-    {
-        echo "<pre>";
-        print_r($this->getData());
-    }
-
     public function averageTemperature()
     {
         $data = $this->getData();
-
         $i = 0;
         $summaryTemperature = 0;
 
@@ -91,7 +69,6 @@ class Weather
     public function averagePressure()
     {
         $data = $this->getData();
-
         $i = 0;
         $summaryPressure = 0;
 
@@ -110,61 +87,4 @@ class Weather
         }
         $this->setAveragePressure(round($summaryPressure/$i, 2));
     }
-
-    public function showAverageData()
-    {
-        echo "Temperature in Warsaw: " . $this->getAverageTemperature();
-        echo "<br>";
-        echo "Pressure in Warsaw: " . $this->getAveragePressure();
-        echo "<br>";
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getData()
-    {
-        return $this->data;
-    }
-
-    /**
-     * @param mixed $data
-     */
-    public function setData(array $data)
-    {
-        $this->data = $data;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getAverageTemperature()
-    {
-        return $this->averageTemperature;
-    }
-
-    /**
-     * @param mixed $averageTemperature
-     */
-    public function setAverageTemperature($averageTemperature)
-    {
-        $this->averageTemperature = $averageTemperature;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getAveragePressure()
-    {
-        return $this->averagePressure;
-    }
-
-    /**
-     * @param mixed $averagePressure
-     */
-    public function setAveragePressure($averagePressure)
-    {
-        $this->averagePressure = $averagePressure;
-    }
-
 }
