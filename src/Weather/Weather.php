@@ -12,6 +12,10 @@ abstract class Weather
 
     private $averagePressure;
 
+    abstract function averageTemperature();
+
+    abstract function averagePressure();
+
     public function showData()
     {
         echo "<pre>";
