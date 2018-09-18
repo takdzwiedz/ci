@@ -13,6 +13,8 @@ abstract class Source
 
     private $url;
 
+    public $array;
+
     /**
      * @return mixed
      */
@@ -60,4 +62,21 @@ abstract class Source
     {
         $this->url = $url;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getArray()
+    {
+        return $this->array;
+    }
+
+    /**
+     * @param mixed $array
+     */
+    public function setArray($array)
+    {
+        $this->array = $array;
+    }
+
 }

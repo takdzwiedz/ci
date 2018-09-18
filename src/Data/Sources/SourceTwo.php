@@ -8,7 +8,6 @@ use MyProject\MyNamespace\Helper\Curl;
 
 class SourceTwo extends Source
 {
-    public $array;
 
     public function __construct()
     {
@@ -30,7 +29,7 @@ class SourceTwo extends Source
                     $this->setTemperature($temperature);
                 }
 
-                // trzeba przeszukać pod kątem przeszukani pierwszych 4 znaków (ciśnienie) następujące po pierwszym wystąpieniu znaku zamknięcia tagu ">" po weather-currently-details-value z uwagi na to, że czasem jest rising, czasem steady w e od zmiany ciśnienia.
+                // trzeba przeszukać pod kątem przeszukani pierwszych 4 znaków (ciśnienie) następujące po pierwszym wystąpieniu znaku zamknięcia tagu ">" po weather-currently-details-value z uwagi na to, że czasem jest rising, czasem steady w zależności od zmiany ciśnienia.
 
                 // szukam miejsca od którego należy rozpocząć przeszukiwanie.
                 $stringPressure = 'Ciśnienie';
@@ -69,15 +68,5 @@ class SourceTwo extends Source
         } catch (\Exception $ex) {
             echo 'Error: ' . $ex->getMessage();
         }
-    }
-
-    public function getArray()
-    {
-        return $this->array;
-    }
-
-    public function setArray($array)
-    {
-        $this->array = $array;
     }
 }

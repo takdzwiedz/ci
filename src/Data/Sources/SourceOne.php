@@ -4,8 +4,8 @@ namespace MyProject\MyNamespace\Data\Sources;
 
 /*
  * Ta klasa jest przykładową klasą poboru danych z serwisu (API)
- * Ta klasa ma zwracać tablicę z array ( nazwa serwisu = > arrray ( teperatura, ciśnienie))
- * Ta klasa powinna mieć wyniesiony mecchanizm curla na zwenatrz i tylko obrabiać dane włąściwe dla danego serwisu.
+ * Ta klasa ma zwracać tablicę z array ( nazwa serwisu = > array ( temperatura, ciśnienie))
+ * Ta klasa powinna mieć wyniesiony mechanizm curla na zewnątrz i tylko obrabiać dane właściwe dla danego serwisu.
  * Ta klasa może rozszerzać klasę abstrakcyjną Source.php
  * Ta klasa musi mieć zabezpieczenie na same liczby
  */
@@ -15,8 +15,6 @@ use MyProject\MyNamespace\Helper\Curl;
 
 class SourceOne extends Source
 {
-
-    public $array;
 
     public function __construct()
     {
@@ -51,16 +49,6 @@ class SourceOne extends Source
         } catch (\Exception $ex) {
             echo 'Error: ' . $ex->getMessage();
         }
-    }
-
-    public function getArray()
-    {
-        return $this->array;
-    }
-
-    public function setArray($array)
-    {
-        $this->array = $array;
     }
 
 }

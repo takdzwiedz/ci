@@ -10,8 +10,6 @@ use MyProject\MyNamespace\Helper\Curl;
 class SourceThree extends Source
 {
 
-    public $array;
-
     public function __construct()
     {
         $url = "http://pogodynka.pl/polska/16dni/warszawa_warszawa";
@@ -57,15 +55,4 @@ class SourceThree extends Source
             echo 'Error: ' . $ex->getMessage();
         }
     }
-
-    public function getArray()
-    {
-        return $this->array;
-    }
-
-    public function setArray($array)
-    {
-        $this->array = $array;
-    }
-
 }
