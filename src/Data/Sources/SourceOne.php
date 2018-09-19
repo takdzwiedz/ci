@@ -2,17 +2,24 @@
 
 namespace MyProject\MyNamespace\Data\Sources;
 
-use MyProject\MyNamespace\Data\Source;
-use MyProject\MyNamespace\Weather\Loader;
+use MyProject\MyNamespace\Data\DataLoaderInterface;
+use MyProject\MyNamespace\Data\DataRetrieverInterface;
+use MyProject\MyNamespace\Data\SourceAbstract;
+use MyProject\MyNamespace\Helper\Loader;
 
-final class SourceOne extends Source
+final class SourceOne extends SourceAbstract implements DataLoaderInterface, DataRetrieverInterface
 {
 
     private $url = "http://data.twojapogoda.pl/forecasts/city/default/2333";
 
     use Loader;
 
-    public function retrieveData()
+    public function __construct()
+    {
+        $this->dataLoader();
+    }
+
+    public function dataRetriever()
     {
         $result = $this->getData();
         $result = json_decode(strip_tags($result), true);

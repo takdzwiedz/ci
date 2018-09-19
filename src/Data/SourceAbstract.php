@@ -4,7 +4,7 @@
 namespace MyProject\MyNamespace\Data;
 
 
-abstract class Source
+abstract class SourceAbstract implements SourceInterface
 {
     private $temperature;
 
@@ -15,8 +15,6 @@ abstract class Source
     private $data;
 
     public $array;
-
-    abstract function retrieveData();
 
     /**
      * @return mixed
@@ -74,9 +72,6 @@ abstract class Source
         return $this->array;
     }
 
-    /**
-     * @param mixed $array
-     */
     public function setArray($url, $temperature, $pressure)
     {
         $this->array = array(

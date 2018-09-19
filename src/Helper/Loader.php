@@ -1,13 +1,12 @@
 <?php
 
 
-namespace MyProject\MyNamespace\Weather;
+namespace MyProject\MyNamespace\Helper;
 
-use MyProject\MyNamespace\Helper\Curl;
 
 trait Loader
 {
-    public function __construct()
+    public function dataLoader()
     {
         $this->setUrl($this->url);
         $data = new Curl($this->url);
@@ -18,7 +17,7 @@ trait Loader
             if ($result)
             {
                 $this->setData($result);
-                $this->retrieveData();
+                $this->dataRetriever();
             }
             else
             {

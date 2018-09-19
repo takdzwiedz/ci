@@ -4,16 +4,23 @@
 namespace MyProject\MyNamespace\Data\Sources;
 
 use Couchbase\Exception;
-use MyProject\MyNamespace\Data\Source;
-use MyProject\MyNamespace\Weather\Loader;
+use MyProject\MyNamespace\Data\DataLoaderInterface;
+use MyProject\MyNamespace\Data\DataRetrieverInterface;
+use MyProject\MyNamespace\Data\SourceAbstract;
+use MyProject\MyNamespace\Helper\Loader;
 
-final class SourceTwo extends Source
+final class SourceTwo extends SourceAbstract implements DataLoaderInterface, DataRetrieverInterface
 {
     private $url ="https://pogoda.interia.pl/prognoza-dlugoterminowa-warszawa,cId,36917";
 
     use Loader;
 
-    public function retrieveData()
+    public function __construct()
+    {
+        $this->dataLoader();
+    }
+
+    public function dataRetriever()
     {
         $result = $this->getData();
         $string = 'weather-currently-temp-strict">';

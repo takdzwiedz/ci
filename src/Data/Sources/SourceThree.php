@@ -3,17 +3,24 @@
 
 namespace MyProject\MyNamespace\Data\Sources;
 
-use MyProject\MyNamespace\Data\Source;
-use MyProject\MyNamespace\Weather\Loader;
+use MyProject\MyNamespace\Data\DataLoaderInterface;
+use MyProject\MyNamespace\Data\DataRetrieverInterface;
+use MyProject\MyNamespace\Data\SourceAbstract;
+use MyProject\MyNamespace\Helper\Loader;
 
 
-final class SourceThree extends Source
+final class SourceThree extends SourceAbstract implements DataLoaderInterface, DataRetrieverInterface
 {
     private $url = "http://pogodynka.pl/polska/16dni/warszawa_warszawa";
 
     use Loader;
 
-    public function retrieveData()
+    public function __construct()
+    {
+        $this->dataLoader();
+    }
+
+    public function dataRetriever()
     {
         $result = $this->getData();
 
