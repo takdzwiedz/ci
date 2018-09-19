@@ -12,19 +12,14 @@ namespace MyProject\MyNamespace\Weather;
  * - Obsługa błędów na wypadek problemów z danym API
  * - pobierać dane
  */
-/* Standard nazewniczy: https://symfony.com/doc/current/contributing/code/standards.html lub w skrócie: https://stackoverflow.com/questions/44042304/naming-php-files
- * Ta klasa ma odpalać (__construct) uruchamianie klas dostarczających informację o pogodzie i ciśnieniu atmosferycznym
- * Ta klasa ma mieć tablice która zbiera dane ze wszystkich klas
- * Ta klasa ma dopisywać do tablicy informacje o zebrane z każdej klasy
- * Ta klasa ma przeszukiwać wszystkie (na początek) 3 klasy foreachem
- * Ta klasa ma wyliczać średnią temperaturę i ciśnienie w oparciu o dane z tablicy i zwracać je w returnie w tablicy
- */
-
 
 
 class WarsawWeather extends Weather
 {
-    function __construct()
+
+    const PREFIX = "MyProject\MyNamespace\Data\Sources\\";
+
+    public function __construct()
     {
         $data = [];
 
@@ -32,59 +27,38 @@ class WarsawWeather extends Weather
         {
             if($class->isDot()) continue;
             $class = basename($class, '.php');
-            $className = "MyProject\MyNamespace\Data\Sources\\$class";
+            $className = self::PREFIX.$class;
             $obj = new $className;
             $result = get_object_vars($obj);
             array_push($data, $result["array"]);
-
         }
         $this->setData($data);
-        $this->averagePressure();
-        $this->averageTemperature();
+        $this->averageValue("temperature");
+        $this->averageValue("pressure");
         $this->showAverageData();
     }
 
-    public function averageTemperature()
+    public function averageValue($val)
     {
         $data = $this->getData();
+
+        $summaryValue = 0;
         $i = 0;
-        $summaryTemperature = 0;
 
         foreach ($data as $key => $value)
         {
-            foreach ($value as $key2=>$value2)
-            {
-                $temperature = $value2[0];
+            $singleValue = $value[$val];
 
-                if($temperature)
-                {
-                    $summaryTemperature += $temperature;
-                    $i++;
-                }
+            if($singleValue)
+            {
+                $summaryValue += $singleValue;
+
+                $i++;
             }
         }
-        $this->setAverageTemperature(round($summaryTemperature/$i, 2));
-    }
 
-    public function averagePressure()
-    {
-        $data = $this->getData();
-        $i = 0;
-        $summaryPressure = 0;
+        $averageValue = round($summaryValue/$i, 2);
 
-        foreach ($data as $key => $value)
-        {
-            foreach ($value as $key2=>$value2)
-            {
-                $pressure = $value2[1];
-
-                if($pressure)
-                {
-                    $summaryPressure += $pressure;
-                    $i++;
-                }
-            }
-        }
-        $this->setAveragePressure(round($summaryPressure/$i, 2));
+        ($val == "temperature") ? $this->setAverageTemperature($averageValue) : $this->setAveragePressure($averageValue);
     }
 }

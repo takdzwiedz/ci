@@ -77,9 +77,13 @@ abstract class Source
     /**
      * @param mixed $array
      */
-    public function setArray($array)
+    public function setArray($url, $temperature, $pressure)
     {
-        $this->array = $array;
+        $this->array = array(
+            "source" => $url,
+            "temperature" => $temperature,
+            "pressure" => $pressure
+        );
     }
 
     /**
@@ -96,5 +100,24 @@ abstract class Source
     public function setData($data)
     {
         $this->data = $data;
+    }
+
+    public function exceptionValue($val, $url, $type)
+    {
+        try
+        {
+            if(is_numeric($val))
+            {
+                ($type == "temperature") ? $this->setTemperature($val) : $this->setPressure($val);
+            }
+            else
+            {
+                throw new \Exception(ucfirst($type) . " $val in $url is non numeric value");
+            }
+        }
+        catch (\Exception $ex)
+        {
+            echo 'Error: ' . $ex->getMessage();
+        }
     }
 }

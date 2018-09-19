@@ -12,9 +12,13 @@ abstract class Weather
 
     private $averagePressure;
 
-    abstract function averageTemperature();
+    const TITLE = "Weather in Warsaw";
 
-    abstract function averagePressure();
+    const SHOW_TEMPERATURE = "Temperature: ";
+
+    const SHOW_PRESSURE ="Pressure: ";
+
+    abstract function averageValue($val);
 
     public function showData()
     {
@@ -24,10 +28,9 @@ abstract class Weather
 
     public function showAverageData()
     {
-        echo "Temperature in Warsaw: " . $this->getAverageTemperature();
-        echo "<br>";
-        echo "Pressure in Warsaw: " . $this->getAveragePressure();
-        echo "<br>";
+        echo self::TITLE . "<br><br>";
+        echo self::SHOW_TEMPERATURE . $this->getAverageTemperature() . "<br>";
+        echo self::SHOW_PRESSURE . $this->getAveragePressure() . "<br>";
     }
 
     /**
@@ -77,5 +80,4 @@ abstract class Weather
     {
         $this->averagePressure = $averagePressure;
     }
-
 }

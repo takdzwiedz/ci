@@ -2,18 +2,10 @@
 
 namespace MyProject\MyNamespace\Data\Sources;
 
-/*
- * Ta klasa jest przykładową klasą poboru danych z serwisu (API)
- * Ta klasa ma zwracać tablicę z array ( nazwa serwisu = > array ( temperatura, ciśnienie))
- * Ta klasa powinna mieć wyniesiony mechanizm curla na zewnątrz i tylko obrabiać dane właściwe dla danego serwisu.
- * Ta klasa może rozszerzać klasę abstrakcyjną Source.php
- * Ta klasa musi mieć zabezpieczenie na same liczby
- */
-
 use MyProject\MyNamespace\Data\Source;
 use MyProject\MyNamespace\Weather\Loader;
 
-class SourceOne extends Source
+final class SourceOne extends Source
 {
 
     private $url = "http://data.twojapogoda.pl/forecasts/city/default/2333";
@@ -33,12 +25,22 @@ class SourceOne extends Source
         $pressure = preg_replace("/[^0-9]/", '', $pressure);
         $this->setPressure($pressure);
 
-        $this->setArray(array(
-            $this->getUrl() => array(
-                $this->getTemperature(),
-                $this->getPressure()
-            )
-        ));
+        try
+        {
+            if ($this->getTemperature() && $this->getPressure())
+            {
+                $this->setArray( $this->getUrl(), $this->getTemperature(), $this->getPressure());
+            }
+            else
+                {
+                throw new \Exception("Empty values in $this->url");
+                }
+        }
+        catch (\Exception $ex)
+        {
+            echo 'Error: ' . $ex->getMessage();
+        }
+
     }
 
 }
